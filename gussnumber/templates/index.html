@@ -1,0 +1,69 @@
+{% extends 'base.html'%}
+
+{% block start %}
+<!-- <h1>this is home file (index ).</h1> -->
+<div class="block ">
+    <h2>Guess The Lucky Number 🎲 </h2>
+    <div id="guidlines" class="text-start text-black-50 mt-4">
+
+        <li>The number you have choose in between 0 and 99.</li>
+        <li>If "Your guess is too small" try big number.</li>
+        <li>If "Your guess is too big" try small number.</li>
+        <li>You have only Three chance to win the game.</li>
+        <li>If you submit the number once then you lost the one chance</li>
+
+    </div>
+    <input type="number" class="form-control mt-3" id="input" placeholder="guss number">
+
+    <button class="btn btn-primary mt-4 px-5" onclick="checkluck()">Submit</button>
+    <h3 class="mt-5 center" id="result"></h3>
+    <h4 id="numberis"></h4>
+    <button style="display: none; margin:0 auto" class="btn btn-danger mt-3 auto" onclick="try_again()"
+        id="try_again">Try
+        Again.!</button>
+</div>
+
+<script>
+    let lucky_number = "{{ lucky_number }}"
+    let count = 3
+    <!-- console.log(lucky_number) -->
+
+    function checkluck() {
+        let input = document.getElementById('input')
+
+        if (count <= 0) {
+            document.getElementById('result').innerHTML = `You have exhausted the attempts.<br> Attemp left: ${count} <br> Lucky number is: ${lucky_number}`;
+            document.getElementById('try_again').style.display = 'block'
+            input.value = '';
+            return
+        }
+
+        count -= 1
+
+        if (input.value == '') {
+            let element = document.getElementById('result');
+            element.innerHTML = `Input can not be blank! attempt left:${count}`;
+        }
+        else if (lucky_number == input.value) {
+            document.getElementById('result').innerHTML = 'Wow! you won.🎉🎉';
+            document.getElementById('numberis').innerHTML = `The Lucky number is ${lucky_number}`;
+            document.getElementById('try_again').style.display = 'block'
+            document.getElementById('try_again').innerHTML = 'Restart Game..!'
+            return
+        }
+        else if (lucky_number > input.value) {
+            document.getElementById('result').innerHTML = `Sorry! Your guess too Small, attempt left:${count}`;
+            input.value = '';
+            return
+        }
+        else if (lucky_number < input.value) {
+            document.getElementById('result').innerHTML = `Sorry! Your guess too Big, attempt left: ${count}`;
+            input.value = '';
+            return
+        }
+    }
+    function try_again() {
+        window.location.reload()
+    }
+</script>
+{% endblock %}
